@@ -1,10 +1,10 @@
-Retail Data-Jobs Scraper
+#Retail Data-Jobs Scraper
 
 
 A focused web scraper that collects data roles (Data Scientist / Data Engineer / Data Analyst and variants) from a curated list of retail/consumer brands. The target list is configurable and the pipeline can be extended to any industry or company set.
 
 
-1 Why this project?
+##1 Why this project?
 
 Many company job boards list thousands of roles across stores, warehouses, and corporate functions. This repo focuses the signal by:
 
