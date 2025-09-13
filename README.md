@@ -1,5 +1,6 @@
 Retail Data-Jobs Scraper
 
+
 A focused web scraper that collects data roles (Data Scientist / Data Engineer / Data Analyst and variants) from a curated list of retail/consumer brands. The target list is configurable and the pipeline can be extended to any industry or company set.
 
 Why this project?
@@ -194,7 +195,7 @@ Screenshots
 Replace these with your actual images:
 
 ![List view with NEW badge](docs/images/screenshot-list.png)
-![Filter by category](docs/images/screenshot-filter.png)![Filter by category](docs/images/new.png.png)
+![Filter by category](docs/images/screenshot-filter.png)![Filter by category](docs/images/new.png)
 
 FAQ
 
