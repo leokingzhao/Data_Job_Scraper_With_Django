@@ -159,27 +159,28 @@ Environment variables
 
 Add this line (run every day at 20:00):
 
-"""
-0 20 * * * cd /path/to/retail-ds-scraper && /path/to/retail-ds-scraper/.venv/bin/python manage.py run_scrape_now --only-active --parallel 2 --limit 10000 >> logs/scrape.log 2>&1
-"""
+    """
+    0 20 * * * cd /path/to/retail-ds-scraper && /path/to/retail-ds-scraper/.venv/bin/python manage.py run_scrape_now --only-active --parallel 2 --limit 10000 >> logs/scrape.log 2>&1
+    """
 
 (Optional) Celery
 ## Terminal 1: Worker (solo pool helps avoid SQLite locks locally)
 
-"""
-.venv/bin/celery -A config worker -l info --pool=solo
-"""
+    """
+    .venv/bin/celery -A config worker -l info --pool=solo
+    """
 
 ## Terminal 2: Beat (scheduler)
-
-"""
-.venv/bin/celery -A config beat -l info
-"""
+    
+    """
+    .venv/bin/celery -A config beat -l info
+    """
 
 ## Or single process
-"""
-.venv/bin/celery -A config worker -B -l info --pool=solo
-"""
+   
+    """
+    .venv/bin/celery -A config worker -B -l info --pool=solo
+    """
 
 Performance & quality tips
 
