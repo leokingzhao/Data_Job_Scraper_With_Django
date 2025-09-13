@@ -3,7 +3,8 @@ Retail Data-Jobs Scraper
 
 A focused web scraper that collects data roles (Data Scientist / Data Engineer / Data Analyst and variants) from a curated list of retail/consumer brands. The target list is configurable and the pipeline can be extended to any industry or company set.
 
-Why this project?
+
+1 Why this project?
 
 Many company job boards list thousands of roles across stores, warehouses, and corporate functions. This repo focuses the signal by:
 
@@ -15,7 +16,7 @@ Normalizing across common ATS platforms (Workday, Greenhouse, Lever, SAP Success
 
 De-duplicating and tagging NEW jobs so you can check updates at a glance.
 
-Features
+2 Features
 🔎 Strict title filter (whitelist)
 
 Only keep roles matching (case-insensitive):
@@ -62,7 +63,8 @@ Easy to add a new ATS scraper class.
 
 Run on demand or via cron (optional: Celery Beat).
 
-How it works (pipeline)
+
+4 How it works (pipeline)
 
 Input companies: each company has name, careers_url, optional data_query_url (often a pre-filtered “keyword=data” page), and active flag.
 
@@ -80,7 +82,8 @@ Persist: update_or_create by (company, apply_url). First time sets first_seen_at
 
 UI: show tabs (All / DS / DE / DA), highlight NEW, order by new first.
 
-Tech stack
+
+5 Tech stack
 
 Python 3.10+
 
@@ -128,10 +131,6 @@ Tip: data_query_url that directly lists keyword=data often yields better speed a
 Example CSV (replace with your list):
 
 name,careers_url,data_query_url,active,notes
-Wayfair,https://www.wayfair.com/careers,https://www.wayfair.com/careers/jobs?keyword=data&location=United%20States,1,"Retail/eCom"
-Nike,https://careers.nike.com/jobs,https://careers.nike.com/jobs?keyword=data&location=United%20States,1,"Corporate"
-H-E-B,https://careers.heb.com/careers-home,https://careers.heb.com/us/en/search-results?keywords=data,1,"Grocery"
-Tapestry,https://careers.tapestry.com/search/?q=data,https://tapestry.wd1.myworkdayjobs.com/en-US/Tapestry_External?searchText=data,1,"Coach/Kate Spade/SW"
 
 3) Run a single company (debug)
 # Try just Wayfair
@@ -190,12 +189,13 @@ Add a new ATS: create jobs/scraper/<newats>.py with a fetch() that returns norma
 
 Fine-tune the generic HTML fallback: adjust jobs/scraper/keywords.py and the filters in generic.py.
 
-Screenshots
 
-Replace these with your actual images:
 
 ![List view with NEW badge](docs/images/screenshot-list.png)
-![Filter by category](docs/images/screenshot-filter.png)![Filter by category](docs/images/new.png)
+
+![Filter by category](docs/images/screenshot-filter.png)
+
+![Filter by category](docs/images/new.png)
 
 FAQ
 
