@@ -1,10 +1,10 @@
-#Retail Data-Jobs Scraper
+# Retail Data-Jobs Scraper
 
 
 A focused web scraper that collects data roles (Data Scientist / Data Engineer / Data Analyst and variants) from a curated list of retail/consumer brands. The target list is configurable and the pipeline can be extended to any industry or company set.
 
 
-##1 Why this project?
+## 1 Why this project?
 
 Many company job boards list thousands of roles across stores, warehouses, and corporate functions. This repo focuses the signal by:
 
@@ -16,7 +16,7 @@ Normalizing across common ATS platforms (Workday, Greenhouse, Lever, SAP Success
 
 De-duplicating and tagging NEW jobs so you can check updates at a glance.
 
-2 Features
+## 2 Features
 🔎 Strict title filter (whitelist)
 
 Only keep roles matching (case-insensitive):
@@ -64,7 +64,7 @@ Easy to add a new ATS scraper class.
 Run on demand or via cron (optional: Celery Beat).
 
 
-4 How it works (pipeline)
+## 4 How it works (pipeline)
 
 Input companies: each company has name, careers_url, optional data_query_url (often a pre-filtered “keyword=data” page), and active flag.
 
@@ -83,7 +83,7 @@ Persist: update_or_create by (company, apply_url). First time sets first_seen_at
 UI: show tabs (All / DS / DE / DA), highlight NEW, order by new first.
 
 
-5 Tech stack
+## 5 Tech stack
 
 Python 3.10+
 
@@ -133,16 +133,16 @@ Example CSV (replace with your list):
 name,careers_url,data_query_url,active,notes
 
 3) Run a single company (debug)
-# Try just Wayfair
-python manage.py run_scrape_now --company "Wayfair" --limit 1 --parallel 1 -v 0
+### Try just a single company(assume you already have the link for certain position of specific company)
+python manage.py run_scrape_now --company "company_name" --limit 1 --parallel 1 -v 0
 
 4) Full crawl
-# Active companies only; parallel 4; generous cap
+## Active companies only; parallel 4; generous cap
 python manage.py run_scrape_now --only-active --parallel 4 --limit 10000 -v 0
 
 5) Start the web UI
 python manage.py runserver 8001
-# Open http://127.0.0.1:8001/jobs/
+## Open http://127.0.0.1:8001/jobs/
 
 Environment variables
 
@@ -162,13 +162,13 @@ Add this line (run every day at 20:00):
 0 20 * * * cd /path/to/retail-ds-scraper && /path/to/retail-ds-scraper/.venv/bin/python manage.py run_scrape_now --only-active --parallel 2 --limit 10000 >> logs/scrape.log 2>&1
 
 (Optional) Celery
-# Terminal 1: Worker (solo pool helps avoid SQLite locks locally)
+## Terminal 1: Worker (solo pool helps avoid SQLite locks locally)
 .venv/bin/celery -A config worker -l info --pool=solo
 
-# Terminal 2: Beat (scheduler)
+## Terminal 2: Beat (scheduler)
 .venv/bin/celery -A config beat -l info
 
-# Or single process
+## Or single process
 .venv/bin/celery -A config worker -B -l info --pool=solo
 
 Performance & quality tips
@@ -197,7 +197,7 @@ Fine-tune the generic HTML fallback: adjust jobs/scraper/keywords.py and the fil
 
 ![Filter by category](docs/images/new.png)
 
-FAQ
+# FAQ
 
 Q: Why 0 results for some companies?
 A: They may currently have no whitelisted roles, be rate-limiting, or use an unsupported pattern. Test with --company, verify data_query_url, and try again.
