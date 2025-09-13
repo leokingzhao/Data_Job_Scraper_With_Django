@@ -1,26 +1,31 @@
+# macOS
+.DS_Store
+
 # Python
 __pycache__/
 *.py[cod]
-*.egg-info/
-*.log
 
-# Django
-db.sqlite3
-*.sqlite3
-media/
-staticfiles/
-
-# Env
+# Virtualenv
 .venv/
 venv/
-ENV/
-.env
+
+# Django / SQLite
+db.sqlite3
+*.sqlite3
+*.sqlite3-*
+*.db
+*.bak
 
 # Logs
 logs/
 *.log
 
-# macOS & IDE
-.DS_Store
+# Build / cache
+*.egg-info/
+dist/
+build/
+
+# IDE
 .vscode/
 .idea/
+
