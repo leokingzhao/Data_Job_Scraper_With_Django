@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Today’s US Data Roles</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.45; margin: 16px; }
+    header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+    select { padding: 6px 8px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; }
+    th { background: #fafafa; }
+    .pager { margin-top: 12px; display: flex; gap: 8px; }
+    .muted { color: #666; font-size: 12px; }
+  </style>
+</head>
+<body>
+<header>
+  <h2 style="margin:0;">Today’s US Data Roles</h2>
+  <form method="get" id="filter-form">
+    <label for="category">Category:</label>
+    <select name="category" id="category" onchange="document.getElementById('filter-form').submit();">
+      {% for c in allowed_cats %}
+        <option value="{{ c }}" {% if c == category %}selected{% endif %}>{{ c|capfirst }}</option>
+      {% endfor %}
+    </select>
+  </form>
+</header>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Company</th>
+      <th>Company URL</th>
+      <th>Job Title</th>
+      <th>Apply Link</th>
+      <th>Found At</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in page_obj.object_list %}
+      <tr>
+        <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+        <td>{{ row.company.name }}</td>
+        <td>
+          {% if row.company.homepage_url %}
+            <a href="{{ row.company.homepage_url }}" target="_blank" rel="noopener">Homepage</a>
+          {% else %}
+            <span class="muted">N/A</span>
+          {% endif %}
+        </td>
+        <td>{{ row.title }}</td>
+        <td><a href="{{ row.apply_url }}" target="_blank" rel="noopener">Open</a></td>
+        <td>{{ row.found_at|date:"Y-m-d H:i" }}</td>
+        <td>{{ row.category|capfirst }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="7" class="muted">No results.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="pager">
+  {% if page_obj.has_previous %}
+    <a href="?category={{ category }}&page={{ page_obj.previous_page_number }}">« Prev</a>
+  {% endif %}
+  <span>Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+    <a href="?category={{ category }}&page={{ page_obj.next_page_number }}">Next »</a>
+  {% endif %}
+</div>
+</body>
+</html>

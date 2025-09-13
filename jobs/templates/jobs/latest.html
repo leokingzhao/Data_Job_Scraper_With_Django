@@ -1,0 +1,149 @@
+{% load tz %}{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Data Roles</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root {
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --bg: #ffffff;
+      --new-fg: #9a3412;
+      --new-bg: #ffedd5;
+      --new-bd: #fdba74;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; color: var(--text); background: var(--bg); }
+    .wrap { max-width: 1200px; margin: 32px auto; padding: 0 24px; }
+    h1 { font-size: 22px; font-weight: 700; margin: 0 0 12px; }
+    .controls { display: flex; gap: 16px; align-items: center; margin: 8px 0 16px; flex-wrap: wrap; }
+    label { color: var(--muted); font-size: 12px; margin-right: 6px; }
+    select { padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: #fff; }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th { font-weight: 600; font-size: 12px; color: var(--muted); text-align: left; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 12px; }
+    tbody td { font-size: 14px; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tbody tr:hover { background: #fafafa; }
+
+    th.col-idx, td.col-idx { width: 56px; text-align: right; color: var(--muted); }
+    th.col-co,  td.col-co  { width: 14%; white-space: nowrap; }
+    th.col-role,td.col-role{ width: auto; }
+    th.col-link,td.col-link{ width: 90px; text-align: center; white-space: nowrap; }
+    th.col-found,td.col-found{ width: 120px; white-space: nowrap; color: var(--muted); }
+
+    .muted { color: var(--muted); }
+    .right { margin-left: auto; color: var(--muted); font-size: 12px; }
+    .pager { display: flex; gap: 8px; align-items: center; margin-top: 12px; }
+    .btn { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: #fff; font-size: 13px; color: #111; text-decoration: none; }
+    .btn[aria-disabled="true"] { color: #9ca3af; }
+    .ext { text-decoration: none; }
+
+    /* NEW 徽标 */
+    .badge-new {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--new-fg);
+      background: var(--new-bg);
+      border: 1px solid var(--new-bd);
+      border-radius: 9999px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Data Roles <span class="muted">({{ today|date:"M. j, Y" }})</span></h1>
+
+  <form id="filters" method="get" class="controls">
+    <div>
+      <label>Category:</label>
+      <select name="category" onchange="this.form.submit()">
+        <option value="All" {% if category|lower == 'all' %}selected{% endif %}>All</option>
+        {% for c in categories %}
+          <option value="{{ c }}" {% if category == c %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label>Page size:</label>
+      <select name="size" onchange="this.form.submit()">
+        {% for sz in page_sizes %}
+          <option value="{{ sz }}" {% if per_page == sz %}selected{% endif %}>{{ sz }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label>Days:</label>
+      <select name="days" onchange="this.form.submit()">
+        {% for d in day_options %}
+          <option value="{{ d }}" {% if days == d %}selected{% endif %}>{{ d }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="right">
+      Showing {{ page.start_index }}–{{ page.end_index }} of {{ total }}
+      <span class="muted" style="margin-left:8px;">NEW = first seen ≤ {{ new_badge_hours }}h</span>
+    </div>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="col-idx">#</th>
+        <th class="col-co">Company</th>
+        <th class="col-role">Role</th>
+        <th class="col-link">Link</th>
+        <th class="col-found">Found</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if rows %}
+        {% for r in rows %}
+          <tr>
+            <td class="col-idx">{{ forloop.counter0|add:page.start_index }}</td>
+            <td class="col-co">{{ r.company|default:"-" }}</td>
+            <td class="col-role">
+              {{ r.title }}
+              {% if r.is_new %}<span class="badge-new">NEW</span>{% endif %}
+            </td>
+            <td class="col-link">
+              {% if r.url %}<a class="ext" href="{{ r.url }}" target="_blank" rel="noopener">open ↗</a>{% else %}-{% endif %}
+            </td>
+            <td class="col-found">{% if r.found %}{{ r.found|date:"Y-m-d H:i" }}{% else %}-{% endif %}</td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr><td colspan="5" class="muted">No results.</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+  <div class="pager">
+    {% if page.has_previous %}
+      <a class="btn"
+         href="?category={{ category }}&size={{ per_page }}&days={{ days }}&page={{ page.previous_page_number }}">‹ Prev</a>
+    {% else %}
+      <span class="btn" aria-disabled="true">‹ Prev</span>
+    {% endif %}
+
+    <span class="muted">Page {{ page.number }} / {{ page.paginator.num_pages }}</span>
+
+    {% if page.has_next %}
+      <a class="btn"
+         href="?category={{ category }}&size={{ per_page }}&days={{ days }}&page={{ page.next_page_number }}">Next ›</a>
+    {% else %}
+      <span class="btn" aria-disabled="true">Next ›</span>
+    {% endif %}
+  </div>
+
+</div>
+</body>
+</html>
