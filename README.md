@@ -138,11 +138,13 @@ Try just a single company(assume you already have the link for certain position 
         python manage.py run_scrape_now --company "company_name" --limit 1 --parallel 1 -v 0
 
 5) Full crawl
-## Active companies only; parallel 4; generous cap
-python manage.py run_scrape_now --only-active --parallel 4 --limit 10000 -v 0
+#### Active companies only; parallel 4; generous cap
+    python manage.py run_scrape_now --only-active --parallel 4 --limit 10000 -v 0
 
 5) Start the web UI
-python manage.py runserver 8001
+   
+       python manage.py runserver 8001
+   
 ## Open http://127.0.0.1:8001/jobs/
 
 Environment variables
