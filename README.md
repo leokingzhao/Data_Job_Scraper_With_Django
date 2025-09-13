@@ -194,7 +194,7 @@ Screenshots
 Replace these with your actual images:
 
 ![List view with NEW badge](docs/images/screenshot-list.png)
-![Filter by category](docs/images/screenshot-filter.png)
+![Filter by category](docs/images/screenshot-filter.png)![Filter by category](docs/images/new.png)
 
 FAQ
 
