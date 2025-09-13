@@ -133,10 +133,11 @@ Example CSV (replace with your list):
 name,careers_url,data_query_url,active,notes
 
 3) Run a single company (debug)
-### Try just a single company(assume you already have the link for certain position of specific company)
-python manage.py run_scrape_now --company "company_name" --limit 1 --parallel 1 -v 0
+Try just a single company(assume you already have the link for certain position of specific company):
 
-4) Full crawl
+        python manage.py run_scrape_now --company "company_name" --limit 1 --parallel 1 -v 0
+
+5) Full crawl
 ## Active companies only; parallel 4; generous cap
 python manage.py run_scrape_now --only-active --parallel 4 --limit 10000 -v 0
 
